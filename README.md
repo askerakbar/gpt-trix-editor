@@ -8,7 +8,7 @@ GPT Trix Editor package extends the default Trix editor features in the Filament
 You can install the package via composer:
 
 ```bash
-composer require asker-akbar/gpt-trix-editor
+composer require askerakbar/gpt-trix-editor
 ```
 
 ## Quick Start
