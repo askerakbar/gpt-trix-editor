@@ -19,12 +19,12 @@ return [
         [
             'prefix_key'    => 'run',
             'prefix_label'  => 'prompt_prefixes.run',
-            'prefix'        =>  'Complete the following text and return back with the same HTML format:',
+            'prefix'        =>  'Complete the following and return the same HTML format:',
         ],
         [
             'prefix_key'    => 'check_grammar',
             'prefix_label'  => 'prompt_prefixes.check_grammar',
-            'prefix'        => 'Check the Grammar and return same HTML format:',
+            'prefix'        => 'Check only the grammar and return the same HTML format:',
         ]
     ]
 

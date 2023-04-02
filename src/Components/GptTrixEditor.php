@@ -81,9 +81,9 @@ class GptTrixEditor extends RichEditor
 
             //return ['status' => true,'message' => "Test"];
 
-            $promptPrefix = null;
-            if(config('gpt-trix-editor.prompt_prefixes.'.$action) != null){
-                $promptPrefix = config('gpt-trix-editor.prompt_prefixes.'.$action);
+            $promptPrefix = $this->getPrompt($prompt);
+            if(is_null($promptPrefix)){
+                return ['status' => false,'message' => "Invalid action"];
             }
 
             //https://github.com/openai-php/client
@@ -114,6 +114,24 @@ class GptTrixEditor extends RichEditor
         return $prefixes->pluck('prefix_label', 'prefix_key')->map(function($value, $key) {
             return Str::title(Str::replace('_', ' ', $key));
         })->all();    
+    }
+
+
+    /**
+     * Returns the prompt associated with the given key.
+     *
+     * @param string $promptKey The key of the prompt to retrieve.
+     *
+     * @return string|null The prompt associated with the given key, or null if not found.
+     */    
+    function getPrompt(string $promptKey): ?string
+    {
+        $configPrompts = optional(config('gpt-trix-editor'))['prompt-prefixes'];
+        if(is_null($configPrompts)){
+            return null;
+        }
+        $prompt = collect($configPrompts)->where('prefix_key', $promptKey)->first();
+        return $prompt ? $prompt['prefix'] : null;
     }
 
 
