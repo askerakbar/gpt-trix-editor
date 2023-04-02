@@ -2,6 +2,9 @@
 
 GPT Trix Editor package is a field component that extends the default Trix editor with OpenAI GPT features in the Filament PHP framework.
 
+![](demo/grammar_check.gif)
+
+
 ## Installation
 
 You can install the package via composer:
