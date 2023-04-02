@@ -2,6 +2,30 @@
 
 return [
 
+    /*
+        max_tokens
+        The maximum number of tokens to generate in the completion.
+        Higher values like 0.8 will make the output more random, while lower values like 0.2 
+        will make it more focused and deterministic.
+        https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
+    */
+
+    'max_tokens' => 1000,
+
+    /*
+        temperature
+        What sampling temperature to use, between 0 and 2. 
+        Higher values like 0.8 will make the output more random, while lower values like 0.2 
+        will make it more focused and deterministic.
+        https://platform.openai.com/docs/api-reference/completions/create#completions/create-temperature
+    */
+
+    'temperature' => 0,
+
+
+    /*
+        If set to true, notifications will be enabled for successfull gpt api calls.
+    */
     'enable_notifications'  => true,
 
     /*

@@ -59,7 +59,7 @@ class GptTrixEditor extends RichEditor
                     }
                     
                     $component->state($gptResponse);
-                    $this->sendNotification(__('gpt-trix-editor::gpt-trix-editor.notification.success'), $gptResponse, 'success');
+                    $this->sendNotification(__('gpt-trix-editor::gpt-trix-editor.notification.success'), null, 'success');
 
 
                 },
@@ -75,23 +75,23 @@ class GptTrixEditor extends RichEditor
      * @param string $action
      * @return array
      */
-    function sendGptRrequest(string $prompt,string $action = 'run'): array
+    function sendGptRrequest(string $prompt,string $promptKey = 'run'): array
     {
         try{
 
             //return ['status' => true,'message' => "Test"];
 
-            $promptPrefix = $this->getPrompt($prompt);
+            $promptPrefix = $this->getPrompt($promptKey);
             if(is_null($promptPrefix)){
-                return ['status' => false,'message' => "Invalid action"];
+                return ['status' => false,'message' => __('gpt-trix-editor::gpt-trix-editor.notification.invalid_action')];
             }
 
             //https://github.com/openai-php/client
             $result = OpenAI::completions()->create([
                 'model' => 'text-davinci-003',
                 'prompt' => $promptPrefix.$prompt,
-                'max_tokens' => 100,
-                'temperature' => 0
+                'max_tokens' => config('gpt-trix-editor.max_tokens'),
+                'temperature' => config('gpt-trix-editor.temperature')
             ]);
 
             return ['status' => true,'message' => $result['choices'][0]['text']];
@@ -144,9 +144,9 @@ class GptTrixEditor extends RichEditor
      * @param string $body
      * @param string $type
      */
-    protected function sendNotification(?string $title, string $body, string $type = 'success'): void
+    protected function sendNotification(?string $title, ?string $body, string $type = 'success'): void
     {
-        if(!config('gpt-trix-editor.enable_notifications')){
+        if(config('gpt-trix-editor.enable_notifications') == false && $type == 'success'){
             return;
         }
         Notification::make()

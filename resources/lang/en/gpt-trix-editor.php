@@ -8,5 +8,6 @@ return [
     'notification.error' => 'Error',
     'notification.warning'   => 'Warning',
     'notification.input_empty'   => 'Empty Input Given',
-    'button_title'  => 'GPT Tools'
+    'button_title'  => 'GPT Tools',
+    'invalid_action'    => 'Invalid Action'
 ];
