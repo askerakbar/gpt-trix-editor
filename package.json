@@ -1,0 +1,13 @@
+{
+  "name": "gpt-trix-editor",
+  "author": "Asker Akbar",
+  "license": "MIT",
+  "private": true,
+  "scripts": {},
+  "devDependencies": {
+    "laravel-mix": "^6.0.49"
+  },
+  "dependencies": {
+    "trix": "^2.0.4"
+  }
+}
