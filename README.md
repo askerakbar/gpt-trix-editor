@@ -33,15 +33,19 @@ Import the field component:
 use AskerAkbar\GptTrixEditor\Components\GptTrixEditor;
 ```
 
-Use it like any other field component:
+You can use the GPT Trix Editor field component like any other field component:
 
 ```
-GptTrixEditor::make('content')
-              ->required()
-              ->columnSpan('full')
+GptTrixEditor::make('content')->columnSpan('full');
 ```
 
+By default, the GPT Toolbar Button is enabled in the GP Trix Editor. However, if you want to disable it, you can do so like this:
 
+```
+GptTrixEditor::make('content')->disableToolbarButtons([
+    'gptTools',
+])->columnSpan('full');
+```
 
 ## To do 
 - [ ] Run the GPT actions on selected/highlighted text 
