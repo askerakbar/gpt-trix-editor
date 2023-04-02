@@ -14,16 +14,22 @@ composer require askerakbar/gpt-trix-editor
 
 ## Quick Start
 
-1. Publish the configuration files
+1. Publish the configuration files by running the following commands:
+
 ```bash
-php artisan openai-php/laravel:publish --tag=config
+php artisan vendor:publish --provider="OpenAI\Laravel\ServiceProvider"
 php artisan vendor:publish --tag="gpt-trix-editor-config"
 php artisan vendor:publish --tag="gpt-trix-editor-translations"
 ```
 
-2. We're using https://github.com/openai-php/laravel laravel package to call the OpenAI APIs, once you publish the all configuration files above, please set the OpenAPI key on config/openapi.php
-3. Optionally you can customize some features on ```config/gpt-trix-editor.php```, including adding more prompts in the menu dropdown.
-4. Make sure to clear the config cache once you make the changes, using php ```php artisan config:clear ```
+2. We're using https://github.com/openai-php/laravel laravel package to call the OpenAI APIs, so you need to set your OpenAI API key in the .env file or in the config/openapi.php file:
+```env
+OPENAI_API_KEY=YOUR_KEY
+```
+
+3. Optionally, you can customize the configuration file at config/gpt-trix-editor.php. This includes adding more prompts to the menu dropdown, setting temperature and max_tokens.
+4. Clear the configuration cache to make sure your changes take effect:
+```php artisan config:clear ```
 5. Done!
 
 # Usage
