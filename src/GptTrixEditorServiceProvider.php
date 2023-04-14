@@ -9,8 +9,9 @@ use Filament\PluginServiceProvider;
 class GptTrixEditorServiceProvider extends PluginServiceProvider
 {
    
-    protected array $scripts = [
+    protected array $beforeCoreScripts = [
         'gpt-trix-editor' => __DIR__ . '/../dist/gpt-trix-editor.js',
+        //'gpt-trix-editor' => __DIR__ . '/../resources/js/gpt-trix-editor.js',
     ];
  
     public function configurePackage(Package $package): void

@@ -3,7 +3,12 @@
   "author": "Asker Akbar",
   "license": "MIT",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "dev": "npm run development",
+    "development": "mix",
+    "prod": "npm run production",
+    "production": "mix --production"
+  },
   "devDependencies": {
     "laravel-mix": "^6.0.49"
   },

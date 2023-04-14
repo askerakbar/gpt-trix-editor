@@ -12,7 +12,7 @@ class GptTrixEditor extends RichEditor
 {
 
     protected string $view = 'gpt-trix-editor::trix-editor';
-
+    
     protected array | Closure $toolbarButtons = [
         'attachFiles',
         'blockquote',
@@ -20,45 +20,68 @@ class GptTrixEditor extends RichEditor
         'bulletList',
         'codeBlock',
         'h2',
-        'h3',
+        'h3',   
         'italic',
         'link',
         'orderedList',
-        'redo',
         'strike',
         'undo',
+        'redo',
         'gptTools'
     ];
     
     public $options = [];
-
+    
     protected function setUp(): void
     {
         parent::setUp();
 
+
         $this->options = $this->getOptions();
         $this->registerListeners([
+            
             'gptTrixEditor::execute' => [
-                function ($component, string $statePath, string $uuid, string $action = null): void {
+                function ($component, string $statePath, string $uuid, string $action = null ,$selectedText = ''): void {
                     
                     if ($component->isDisabled() || $statePath !== $component->getStatePath()) {
                         return;
                     }
 
+                    $livewire = $component->getLivewire();
+                    $textToSend = $component->getState();
+                   
+                    $configPrompts  = optional(config('gpt-trix-editor'))['prompt-prefixes'];
+                    $prompt        = collect($configPrompts)->where('prefix_key', $action)->first();
+                    
                     if(is_null($component->getState())){
+                        $livewire->dispatchBrowserEvent('update-selected-content',['id'=> $statePath]);
                         $this->sendNotification(__('gpt-trix-editor::gpt-trix-editor.notification.warning'), __('gpt-trix-editor::gpt-trix-editor.notification.input_empty'), 'warning');
                         return;
                     }
 
-                    $req = $this->sendGptRrequest($component->getState(),$action);
+                    if(isset($prompt['on_selected']) && $prompt['on_selected'] == true){
+                        if($selectedText == ''){
+                            $livewire->dispatchBrowserEvent('update-selected-content',['id'=> $statePath]);
+                            $this->sendNotification(__('gpt-trix-editor::gpt-trix-editor.notification.warning'), __('gpt-trix-editor::gpt-trix-editor.notification.input_empty'), 'warning');
+                            return;
+                        }
+                        $textToSend = $selectedText;
+                    }
+                    
+                    $req = $this->sendGptRrequest($textToSend,$action);
                     $gptResponse = $req['message'];
-               
+
                     if(!$req['status']){
                         $this->sendNotification(__('gpt-trix-editor::gpt-trix-editor.notification.error'), $gptResponse, 'danger');
                         return;
                     }
-                    
-                    $component->state($gptResponse);
+
+                    if(!isset($prompt['on_selected'])){
+                        $livewire->dispatchBrowserEvent('update-content',['id'=> $statePath,'content' => $gptResponse]);
+                    }else{
+                        $livewire->dispatchBrowserEvent('update-selected-content',['id'=> $statePath,'content' => $gptResponse]);
+                    }
+
                     $this->sendNotification(__('gpt-trix-editor::gpt-trix-editor.notification.success'), null, 'success');
 
 
@@ -71,15 +94,15 @@ class GptTrixEditor extends RichEditor
     /**
      * Sent the Request to OPEN AI GPT
      *
-     * @param string $prompt
+     * @param $prompt
      * @param string $action
      * @return array
      */
-    function sendGptRrequest(string $prompt,string $promptKey = 'run'): array
+    function sendGptRrequest($prompt = null,string $promptKey = 'run'): array
     {
         try{
-
-            //return ['status' => true,'message' => "Test"];
+            
+            #sleep(2); return ['status' => true,'message' => "<b>New</b> Test-".time()];
 
             $promptPrefix = $this->getPrompt($promptKey);
             if(is_null($promptPrefix)){
@@ -111,8 +134,12 @@ class GptTrixEditor extends RichEditor
     function getOptions():array
     {
         $prefixes = collect(config('gpt-trix-editor')['prompt-prefixes']); 
-        return $prefixes->pluck('prefix_label', 'prefix_key')->map(function($value, $key) {
-            return Str::title(Str::replace('_', ' ', $key));
+        return $prefixes->map(function($value, $key) {
+            return [
+                'key'           => $value['prefix_key'],
+                'label'         => Str::title(Str::replace('_', ' ', $value['prefix_key'])),
+                'on_selected'   => isset($value['on_selected']) ? $value['on_selected'] : false
+            ];
         })->all();    
     }
 
@@ -155,6 +182,5 @@ class GptTrixEditor extends RichEditor
             ->body($body)
             ->send();
     }
-
 
 }

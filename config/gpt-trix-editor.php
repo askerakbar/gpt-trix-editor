@@ -44,9 +44,21 @@ return [
             'prefix'        =>  'Complete the following and return the same HTML format:',
         ],
         [
+            'prefix_key'    => 'run_on_selected_text',  
+            'prefix_label'  => 'prompt_prefixes.run_on_selected_text',
+            'prefix'        => 'Complete the following and return the same HTML format:',
+            'on_selected'  => true
+        ],
+        [
             'prefix_key'    => 'check_grammar',
             'prefix_label'  => 'prompt_prefixes.check_grammar',
             'prefix'        => 'Check only the grammar and return the same HTML format:',
+        ],
+        [
+            'prefix_key'    => 'fix_grammar_on_selected_text',
+            'prefix_label'  => 'prompt_prefixes.check_grammar_on_selected_text',
+            'prefix'        => 'Fix the grammar and spelling issues and return the same HTML format without changes:',
+            'on_selected'  => true
         ]
     ]
 

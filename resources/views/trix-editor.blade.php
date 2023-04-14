@@ -1,7 +1,14 @@
 <x-dynamic-component :component="$getFieldWrapperView()" :id="$getId()" :label="$getLabel()" :label-sr-only="$isLabelHidden()" :helper-text="$getHelperText()" :hint="$getHint()" :hint-action="$getHintAction()" :hint-color="$getHintColor()" :hint-icon="$getHintIcon()" :required="$isRequired()" :state-path="$getStatePath()">
-    <div x-data="richEditorFormComponent({
+    <div x-data="trixEditor({
             state: $wire.{{ $applyStateBindingModifiers('entangle(\'' . $getStatePath() . '\')') }},
-        })"
+        })" 
+        x-on:update-selected-content.window="
+            if (event.detail.id === '{{ $getId() }}') updateSelectedContent(event.detail.content)
+        "
+        x-on:update-content.window="
+            if(event.detail.id === '{{ $getId() }}') updateContent(event.detail.content)
+        "
+        x-on:close.window="close()" 
         x-on:trix-attachment-add="
             if (! $event.attachment.file) return
 
@@ -16,18 +23,19 @@
                 })
             })
         " 
-        x-on:trix-change="state = $event.target.value"
+        x-on:trix-change="state = $event.target.value" 
         x-on:trix-file-accept="
             if ({{ $hasToolbarButton('attachFiles') ? 'true' : 'false' }}) return
 
             $event.preventDefault()
-        " {{ $attributes->merge($getExtraAttributes())->class(['filament-forms-rich-editor-component space-y-2']) }} {{ $getExtraAlpineAttributeBag() }}>
+        " 
+        wire:ignore
+        {{ $attributes->merge($getExtraAttributes())->class(['filament-forms-rich-editor-component space-y-2']) }} {{ $getExtraAlpineAttributeBag() }}>
         @unless ($isDisabled())
         <input id="trix-value-{{ $getId() }}" type="hidden" />
 
         <trix-toolbar id="trix-toolbar-{{ $getId() }}" @class([ 'hidden'=> ! count($getToolbarButtons()),
-            ])
-            >
+            ])>
 
             <div class="flex justify-between space-x-4 rtl:space-x-reverse overflow-x-auto items-stretch overflow-y-hidden">
                 <div class="flex items-stretch space-x-4 outline-none rtl:space-x-reverse">
@@ -142,17 +150,26 @@
                             </x-slot>
 
                             <x-filament::dropdown.list>
-                                @foreach($options as $key => $value)
-                                    <x-filament::dropdown.item title="{{$value}}" wire:loading.attr="disabled" wire:click.stop="dispatchFormEvent('gptTrixEditor::execute', '{{ $getStatePath() }}', '{{ $getId() }}','{{ $key }}')">
-                                        <svg wire:target="dispatchFormEvent('gptTrixEditor::execute', '{{ $getStatePath() }}', '{{ $getId() }}','{{ $key }}')" wire:loading.delay="wire:loading.delay.long" wire:loading viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-spin filament-dropdown-list-item-icon mr-2 h-5 w-5 rtl:ml-2 rtl:mr-0 group-hover:text-white group-focus:text-white text-primary-500">
-                                        <path opacity="0.2" fill-rule="evenodd" clip-rule="evenodd" d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="currentColor"></path>
-                                        <path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path>
-                                        </svg>
-                                        @lang($value)
-                                    </x-filament::dropdown.item>
-                                @endforeach
+                            @foreach($options as $key => $value)
+                                <span x-data="gptSpinnerComponent" 
+                                x-on:update-selected-content.window="
+                                    if (event.detail.id === '{{ $getId() }}') hideLoader()
+                                "
+                                x-on:update-content.window="
+                                    if(event.detail.id === '{{ $getId() }}') hideLoader()
+                                ">
+                                <x-filament::dropdown.item x-on:click="showLoader()" wire:click.stop="dispatchFormEvent('gptTrixEditor::execute', '{{ $getStatePath() }}', '{{ $getId() }}','{{ $value['key'] }}',window.getSelection().toString())" title="{{$value['label']}}">
+                                <svg x-show="loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="float:left" class="animate-spin filament-dropdown-list-item-icon mr-2 h-5 w-5 rtl:ml-2 rtl:mr-0 group-hover:text-white group-focus:text-white text-primary-500">
+                                    <path opacity="0.2" fill-rule="evenodd" clip-rule="evenodd" d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="currentColor"></path>
+                                    <path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path>
+                                </svg>
+                                {{$value['label']}}
+                                </x-filament::dropdown.item>     
+                                </span>
+                            @endforeach
                             </x-filament::dropdown.list>
                             
+
                         </x-filament::dropdown>
                     </div>
                     @endif
@@ -211,8 +228,5 @@
         <div x-html="state" @class([ 'prose block w-full max-w-none rounded-lg border border-gray-300 bg-white p-3 opacity-70 shadow-sm' , 'dark:prose-invert dark:border-gray-600 dark:bg-gray-700'=> config('forms.dark_mode'),
             ])></div>
         @endunless
-        <script>
-           
-        </script>
     </div>
 </x-dynamic-component>

@@ -1,50 +1,10 @@
-require("trix")
+document.addEventListener('alpine:init', () => {
 
-Trix.config.blockAttributes.default.tagName = 'p'
-
-Trix.config.blockAttributes.default.breakOnReturn = true
-
-Trix.config.blockAttributes.heading = {
-    tagName: 'h2',
-    terminal: true,
-    breakOnReturn: true,
-    group: false,
-}
-
-Trix.config.blockAttributes.subHeading = {
-    tagName: 'h3',
-    terminal: true,
-    breakOnReturn: true,
-    group: false,
-}
-
-Trix.Block.prototype.breaksOnReturn = function () {
-    const lastAttribute = this.getLastAttribute()
-    const blockConfig = Trix.getBlockConfig(
-        lastAttribute ? lastAttribute : 'default',
-    )
-
-    return blockConfig?.breakOnReturn ?? false
-}
-
-Trix.LineBreakInsertion.prototype.shouldInsertBlockBreak = function () {
-    if (
-        this.block.hasAttributes() &&
-        this.block.isListItem() &&
-        !this.block.isEmpty()
-    ) {
-        return this.startLocation.offset > 0
-    } else {
-        return !this.shouldBreakFormattedBlock() ? this.breaksOnReturn : false
-    }
-}
-
-export default (Alpine) => {
-    Alpine.data('richEditorFormComponent', ({ state }) => {
+    Alpine.data('trixEditor', ({ state }) => {
         return {
             state,
-
             init: function () {
+
                 this.$refs.trix?.editor?.loadHTML(this.state)
 
                 this.$watch('state', () => {
@@ -55,6 +15,41 @@ export default (Alpine) => {
                     this.$refs.trix?.editor?.loadHTML(this.state)
                 })
             },
+            updateSelectedContent: function(content = ""){
+                if(!content.trim().length){
+                    return;
+                }
+                document.execCommand('insertHTML', true,  content);
+                this.$refs.trix?.editor.recordUndoEntry(content);
+            },
+            updateContent: function(content = ''){
+                if(!content.trim().length){
+                    return;
+                }
+                var activeElement = window.document.activeElement;
+                var editor = this.$refs.trix?.editor;
+                editor.recordUndoEntry(content);
+                editor.setSelectedRange([0,editor.getDocument().getLength()]);
+                editor.insertHTML(content);
+                activeElement && activeElement.focus && activeElement.focus();
+            }
         }
-    })
-}
+    });
+
+    // for some readson loading spinner is not working properly when used with window.getSelection() 
+    // have to find a better way
+    Alpine.data('gptSpinnerComponent', () => ({
+        loading: true,
+        init() {
+            this.loading = false
+        },
+        showLoader(){
+           this.loading = true
+        },
+        hideLoader(){
+           this.loading = false
+        }
+    }))
+
+})
+

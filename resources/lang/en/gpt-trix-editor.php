@@ -9,5 +9,6 @@ return [
     'notification.warning'   => 'Warning',
     'notification.input_empty'   => 'Empty Input Given',
     'button_title'  => 'GPT Tools',
-    'invalid_action'    => 'Invalid Action'
+    'invalid_action'    => 'Invalid Action',
+    'check_grammar_on_selected_text' => 'Check the Grammar on Selected Text'
 ];
