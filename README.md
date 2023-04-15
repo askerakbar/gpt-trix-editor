@@ -4,7 +4,7 @@ The GPT Trix Editor is a form field component for the Filament PHP framework tha
 
 Features:
 
-## New Run GPT on selected/highlighted text 👇
+### New - Run GPT on selected/highlighted text 👇
 
 <img src="demo/fix-grammar-on-selected-text.gif" width="75%"/>
 
@@ -65,7 +65,7 @@ GptTrixEditor::make('content')->disableToolbarButtons([
 ```
 
 ## To do 
-- [ ] Run the GPT actions on selected/highlighted text 
+- ✅ Run the GPT actions on selected/highlighted text 
 
 ## Contribute / Report a bug / Security Vulnerabilities
 If you would like to contriubte, please feel free to submit pull requests or open issues.
