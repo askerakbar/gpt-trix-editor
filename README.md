@@ -6,8 +6,6 @@ Features:
 
 ### New - Run GPT on selected/highlighted text 👇
 
-<img src="demo/fix-grammar-on-selected-text.gif" width="75%"/>
-
 <img src="demo/run-on-selected-text.gif" width="75%"/>
 
 <img src="demo/run.gif" width="75%"/>
