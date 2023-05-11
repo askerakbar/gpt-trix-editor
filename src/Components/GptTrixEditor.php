@@ -182,5 +182,45 @@ class GptTrixEditor extends RichEditor
             ->body($body)
             ->send();
     }
+    
+    protected array|Arrayable|string|Closure|null $option = [];
+
+    public function option(array|Arrayable|string|Closure|null $option): static
+    {
+        $this->option = $option;
+
+        return $this;
+    }
+
+    public function getOption(): array
+    {
+        $option = $this->evaluate($this->option) ?? [];
+        $options = [];
+
+        // Check if $option is a string and if a function called "enum_exists" exists,
+        // and if the enum specified by $option exists
+
+        if (is_string($option) && function_exists('enum_exists') && enum_exists($option)) {
+            // Convert the enum cases into key-value pairs
+            $option = collect($option::cases())->mapWithKeys(static fn($case) => [($case?->value ?? $case->name) => $case->name]);
+        }
+
+        // Convert $option to an array if it implements the Arrayable interface
+        if ($option instanceof Arrayable) {
+            $options = $option->toArray();
+        }
+        // If $option is already an array, assign it to $options directly
+        elseif (is_array($option)) {
+            $options = $option;
+        }
+
+        return $options;
+    }
+
+
+    public function hasDynamicOptions(): bool
+    {
+        return $this->option instanceof Closure;
+    }
 
 }
