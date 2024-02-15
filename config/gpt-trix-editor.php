@@ -5,7 +5,7 @@ return [
     /*
      * Set the model to use for the GPT API.
      */
-    'model' => env('TRIX_GPT_MODEL', 'gpt-3.5-turbo'),
+    'model' => env('TRIX_GPT_MODEL', 'gpt-3.5-turbo-instruct'),
 
     /*
         max_tokens
