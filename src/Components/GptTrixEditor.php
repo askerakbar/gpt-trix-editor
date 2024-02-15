@@ -111,7 +111,7 @@ class GptTrixEditor extends RichEditor
 
             //https://github.com/openai-php/client
             $result = OpenAI::completions()->create([
-                'model' => 'text-davinci-003',
+                'model' => config('gpt-trix-editor.model'),
                 'prompt' => $promptPrefix.$prompt,
                 'max_tokens' => config('gpt-trix-editor.max_tokens'),
                 'temperature' => config('gpt-trix-editor.temperature')
@@ -137,7 +137,7 @@ class GptTrixEditor extends RichEditor
         return $prefixes->map(function($value, $key) {
             return [
                 'key'           => $value['prefix_key'],
-                'label'         => Str::title(Str::replace('_', ' ', $value['prefix_key'])),
+                'label'         => __('gpt-trix-editor::gpt-trix-editor.' . $value['prefix_label']),
                 'on_selected'   => isset($value['on_selected']) ? $value['on_selected'] : false
             ];
         })->all();    
