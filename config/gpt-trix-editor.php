@@ -3,6 +3,11 @@
 return [
 
     /*
+     * Set the model to use for the GPT API.
+     */
+    'model' => env('TRIX_GPT_MODEL', 'gpt-3.5-turbo-instruct'),
+
+    /*
         max_tokens
         The maximum number of tokens to generate in the completion.
         https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
