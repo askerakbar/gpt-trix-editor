@@ -17,8 +17,8 @@ return [
 
     /*
         temperature
-        What sampling temperature to use, between 0 and 2. 
-        Higher values like 0.8 will make the output more random, while lower values like 0.2 
+        What sampling temperature to use, between 0 and 2.
+        Higher values like 0.8 will make the output more random, while lower values like 0.2
         will make it more focused and deterministic.
         https://platform.openai.com/docs/api-reference/completions/create#completions/create-temperature
     */
@@ -49,7 +49,7 @@ return [
             'prefix'        =>  'Complete the following and return the same HTML format:',
         ],
         [
-            'prefix_key'    => 'run_on_selected_text',  
+            'prefix_key'    => 'run_on_selected_text',
             'prefix_label'  => 'prompt_prefixes.run_on_selected_text',
             'prefix'        => 'Complete the following and return the same HTML format:',
             'on_selected'  => true

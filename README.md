@@ -35,7 +35,10 @@ php artisan vendor:publish --tag="gpt-trix-editor-translations"
 ```env
 OPENAI_API_KEY=YOUR_KEY
 ```
-
+You can also set the GPT model in the .env
+```env
+TRIX_GPT_MODEL=YOUR_MODEL
+```
 3. Optionally, you can customize the configuration file at config/gpt-trix-editor.php. This includes adding more prompts to the menu dropdown, setting temperature and max_tokens.
 4. Clear the configuration cache to make sure your changes take effect:
 ```php artisan config:clear ```
@@ -63,7 +66,7 @@ GptTrixEditor::make('content')->disableToolbarButtons([
 ```
 
 ## To do 
-- ✅ Run the GPT actions on selected/highlighted text 
+- ✅ Run the GPT actions on selected/highlighted text
 
 ## Contribute / Report a bug / Security Vulnerabilities
 If you would like to contriubte, please feel free to submit pull requests or open issues.

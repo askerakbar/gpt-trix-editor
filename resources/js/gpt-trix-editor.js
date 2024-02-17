@@ -36,7 +36,7 @@ document.addEventListener('alpine:init', () => {
         }
     });
 
-    // for some readson loading spinner is not working properly when used with window.getSelection() 
+    // for some readson loading spinner is not working properly when used with window.getSelection()
     // have to find a better way
     Alpine.data('gptSpinnerComponent', () => ({
         loading: true,

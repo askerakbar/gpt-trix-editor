@@ -4,3 +4,4 @@ composer.lock
 mix-manifest.json
 .idea
 .DS_Store
+.phpintel
