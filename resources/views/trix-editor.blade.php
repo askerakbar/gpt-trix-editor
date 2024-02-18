@@ -15,6 +15,15 @@
             class="fi-fo-rich-editor fi-disabled prose block w-full max-w-none rounded-lg bg-gray-50 px-3 py-3 text-gray-500 shadow-sm ring-1 ring-gray-950/10 dark:prose-invert dark:bg-transparent dark:text-gray-400 dark:ring-white/10 sm:text-sm"
         ></div>
     @else
+        <div
+            x-data="richEditorFormComponent({
+                            state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')", isOptimisticallyLive: false) }},
+                        })"
+            ax-load="visible"
+            ax-load
+            ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('rich-editor', 'filament/forms') }}">
+
+        </div>
         <x-filament::input.wrapper
             :valid="! $errors->has($statePath)"
             :attributes="
@@ -23,11 +32,8 @@
             "
         >
             <div
-                @if (FilamentView::hasSpaMode())
-                    ax-load="visible"
-                @else
-                    ax-load
-                @endif
+                ax-load
+                ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('gpt-trix-editor', 'askerakbar/gpt-trix-editor') }}"
                 x-data="trixEditor({
                     state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')", isOptimisticallyLive: false) }},
                 })"
@@ -387,7 +393,8 @@
 
                                     <x-filament::dropdown.list>
                                         @foreach($options as $key => $value)
-                                            <span x-data="gptSpinnerComponent"
+                                            <span
+                                                x-data="gptTrixSpinner"
                                                   x-on:update-selected-content.window="
                                           if (event.detail.statePath === '{{ $getId() }}') hideLoader()
                                           "
@@ -531,6 +538,22 @@
                         display: none !important;
                     }
                 </style>
+                <script>
+                    document.addEventListener('alpine:init', () => {
+                        Alpine.data('gptTrixSpinner', () => ({
+                            loading: true,
+                            init() {
+                                this.loading = false
+                            },
+                            showLoader(){
+                                this.loading = true
+                            },
+                            hideLoader(){
+                                this.loading = false
+                            }
+                        }))
+                    })
+                </script>
             </div>
         </x-filament::input.wrapper>
     @endif

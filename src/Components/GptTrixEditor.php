@@ -105,7 +105,7 @@ class GptTrixEditor extends RichEditor
     {
         try{
 
-            sleep(5); return ['status' => true,'message' => "<b>New</b> Test-".time()];
+            #sleep(2); return ['status' => true,'message' => "<b>New</b> Test-".time()];
 
             $promptPrefix = $this->getPrompt($promptKey);
             if(is_null($promptPrefix)){

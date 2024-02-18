@@ -8,6 +8,8 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Assets\Js;
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\AlpineComponent;
 
 class GptTrixEditorServiceProvider extends PackageServiceProvider
 {
@@ -28,11 +30,25 @@ class GptTrixEditorServiceProvider extends PackageServiceProvider
         parent::boot();
     }
 
-    public function packageBooted()
+    public function packageBooted(): void
     {
-        FilamentAsset::register([
-            Js::make('gpt-trix-editor', __DIR__ . '/../dist/gpt-trix-editor.js'),
-        ], package: 'askerakbar/gpt-trix-editor');
+        FilamentAsset::register(
+            $this->getAssets(),
+            $this->getAssetPackageName(),
+        );
     }
+
+    protected function getAssets(): array
+    {
+        return [
+            AlpineComponent::make('gpt-trix-editor', __DIR__ . '/../dist/components/gpt-trix-editor.js'),
+        ];
+    }
+
+    protected function getAssetPackageName(): string
+    {
+        return 'askerakbar/gpt-trix-editor';
+    }
+
 
 }

@@ -1,18 +1,22 @@
 {
   "name": "gpt-trix-editor",
-  "author": "Asker Akbar",
-  "license": "MIT",
-  "private": true,
-  "scripts": {
-    "dev": "npm run development",
-    "development": "mix",
-    "prod": "npm run production",
-    "production": "mix --production"
+  "type": "module",
+  "version": "1.0.0",
+  "description": "The GPT Trix Editor is a form field component for the Filament PHP framework that enhances the Trix editor with OpenAI GPT features.",
+  "main": "index.js",
+  "bin": {
+    "gpt-trix-editor": "bin/build.js"
   },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:js": "node bin/build.js"
+  },
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "laravel-mix": "^6.0.49"
+    "esbuild": "^0.20.0"
   },
   "dependencies": {
-    "trix": "^2.0.4"
+      "trix": "^1.3.1"
   }
 }
