@@ -6,11 +6,11 @@ Features:
 
 ### New - Run GPT on selected/highlighted text 👇
 
-<img src="https://github.com/askerakbar/gpt-trix-editor/blob/main/demo/run-on-selected-text.gif" width="75%"/>
+<img src="https://raw.githubusercontent.com/askerakbar/gpt-trix-editor/main/demo/run-on-selected-text.gif" width="75%"/>
 
-<img src="https://github.com/askerakbar/gpt-trix-editor/blob/main/demo/run.gif" width="75%"/>
+<img src="https://raw.githubusercontent.com/askerakbar/gpt-trix-editor/main/demo/run.gif" width="75%"/>
 
-<img src="https://github.com/askerakbar/gpt-trix-editor/blob/main/demo/check-grammar.gif" width="75%"/>
+<img src="https://raw.githubusercontent.com/askerakbar/gpt-trix-editor/main/demo/check-grammar.gif" width="75%"/>
 
 
 ## Installation
