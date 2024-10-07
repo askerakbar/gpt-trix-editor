@@ -2,6 +2,10 @@
 
 The GPT Trix Editor is a form field component for the Filament PHP framework that enhances the Trix editor with OpenAI GPT features.
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/askerakbar/gpt-trix-editor.svg?style=flat-square)](https://packagist.org/packages/askerakbar/gpt-trix-editor)
+[![Total Downloads](https://img.shields.io/packagist/dt/askerakbar/gpt-trix-editor.svg?style=flat-square)](https://packagist.org/packages/askerakbar/gpt-trix-editor)
+
+
 Features:
 
 ### New - Run GPT on selected/highlighted text 👇
