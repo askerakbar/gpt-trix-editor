@@ -8,7 +8,7 @@ The GPT Trix Editor is a form field component for the Filament PHP framework tha
 
 Features:
 
-### New - Run GPT on selected/highlighted text 👇
+### New - Call ChatGPT API on selected/highlighted text 👇
 
 <img src="https://raw.githubusercontent.com/askerakbar/gpt-trix-editor/main/demo/run-on-selected-text.gif" width="75%"/>
 
